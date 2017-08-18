@@ -25,5 +25,14 @@ a list of files created during install.
 Usage
 =====
 
+queuewait
+---------
+run
+```
+queuewait -h
+```
+to see usage and options info.
+
+
 Development/Debugging Notes
 ===========================
