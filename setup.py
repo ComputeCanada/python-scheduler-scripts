@@ -11,7 +11,7 @@ setup(
   packages=["scheduler_scripts"],
   entry_points={"console_scripts":['queuewait=scheduler_scripts.queuewait:main']},
   version=version,
-  description="",
+  description="Adds queue wait time column to sacct output",
   long_description=long_descr,
   author="Chris Geroux",
   author_email="chris.geroux@ace-net.ca",
