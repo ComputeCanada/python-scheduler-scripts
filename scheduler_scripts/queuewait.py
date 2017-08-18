@@ -122,7 +122,12 @@ def printFileLinePlusQueueWaitTimes(file):
     columnNum+=1
   headerOut=formatString.format(*headerColumns)
   print(headerOut)
-  
+  line=""
+  for columnWidth in columnWidths:
+    line+=" "
+    for i in range(columnWidth):
+      line+="-"
+  print(line)
   for line in fileLines[1:]:#skip header
     printLinePlusQueueWaitTime(line,submitColumn,startColumn,formatString)
 def main():
