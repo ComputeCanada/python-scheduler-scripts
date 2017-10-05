@@ -75,6 +75,8 @@ def printLinePlusQueueWaitTime(line,submitColumn,startColumn,formatString,sepera
   
   line=line.strip()
   splitLine=line.split(seperator)
+  if "-" in splitLine[0]:
+    return#header line, just skip it
   logger.debug("splitLine="+str(splitLine))
   
   #get submit time
@@ -87,11 +89,8 @@ def printLinePlusQueueWaitTime(line,submitColumn,startColumn,formatString,sepera
   #get start time
   if splitLine[startColumn] not in ["Unknown","N/A"]:
     startTime=datetime.datetime.strptime(splitLine[startColumn],timeFormat)
-  elif splitLine[startColumn]=="N/A":#use current date/time
-    startTime=datetime.datetime.now()
   else:
-    #TODO: add a message saying time not known for a job
-    return None#can't count a difference if the time is unknown
+    startTime=datetime.datetime.now()
   
   waitTimeStr=str(startTime-submitTime)
   splitLine.append(waitTimeStr)
@@ -108,16 +107,13 @@ def printFileLinePlusQueueWaitTimes(file):
   if '|' not in header:
     #raise Exception("no '|'s found in file header, did you run sacct with the \"-p\" option?")
     #using space as a separator doesn't work very well yet
-    print("WARNING: no '|'s found in file header, assuming spaces used instead")
+    print("WARNING: no '|'s found in file header, assuming spaces used "
+      +"instead. If using sacct use the \"-p\" option to use '|'s as "
+      +"delineators, it is much safer.")
     seperator=None#use default, which seems to do the right thing
   header=header.strip()
   headerColumns=header.split(seperator)
   logger.debug("headerColumns="+str(headerColumns))
-  
-  #check that we have a JobIDRaw, Submit, and Start columns
-  #if "JobIDRaw" not in headerColumns:
-  #  raise Exception("no \"JobIDRaw\" column found in header, try adding a --format=JobIDRaw,submit,start")    
-  #jobIDColumn=headerColumns.index("JobIDRaw")
   
   #get submit time column header
   submitTimeColumnName="Submit"#sacct
@@ -139,22 +135,23 @@ def printFileLinePlusQueueWaitTimes(file):
   
   columnWidths=getMaxColumnWidths(fileLines,seperator)
   logger.debug("columnWidths="+str(columnWidths))
-  columnWidths.append(20)#width of "QueueWait"+1
+  columnWidths.append(21)#width of "QueueWait"+1
   
   columnNum=0
   headerColumns.append("QueueWait")
   logger.debug("headerColumns="+str(headerColumns))
   formatString=""
   for column in headerColumns:
-    formatString+="{:>"+str(columnWidths[columnNum])+"} "
+    formatString+="{:>"+str(columnWidths[columnNum])+"}"
+    formatString+=" "
     columnNum+=1
   headerOut=formatString.format(*headerColumns)
   print(headerOut)
   line=""
   for columnWidth in columnWidths:
-    line+=" "
     for i in range(columnWidth):
       line+="-"
+    line+=" "
   print(line)
   
   for line in fileLines[1:]:#skip header
