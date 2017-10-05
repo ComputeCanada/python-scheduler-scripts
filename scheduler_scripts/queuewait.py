@@ -90,7 +90,9 @@ def printLinePlusQueueWaitTime(line,submitColumn,startColumn,formatString,sepera
   if splitLine[startColumn] not in ["Unknown","N/A"]:
     startTime=datetime.datetime.strptime(splitLine[startColumn],timeFormat)
   else:
-    startTime=datetime.datetime.now()
+    tmp=datetime.datetime.now()
+    startTime=datetime.datetime(tmp.year,tmp.month,tmp.day,tmp.hour,tmp.minute
+      ,tmp.second)#drop the microseconds
   
   waitTimeStr=str(startTime-submitTime)
   splitLine.append(waitTimeStr)
