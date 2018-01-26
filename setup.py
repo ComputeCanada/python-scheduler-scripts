@@ -9,9 +9,9 @@ with open("README.md", "rb") as f:
 setup(
   name="scheduler_scripts",
   packages=["scheduler_scripts"],
-  entry_points={"console_scripts":['queuewait=scheduler_scripts.queuewait:main']},
+  entry_points={"console_scripts":['queuewait=scheduler_scripts.queuewait:main','sacctall=scheduler_scripts.sacctall:main']},
   version=version,
-  description="Adds queue wait time column to sacct output",
+  description="A number of scripts found useful when analyzing slurm jobs",
   long_description=long_descr,
   author="Chris Geroux",
   author_email="chris.geroux@ace-net.ca",

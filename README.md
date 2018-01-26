@@ -24,10 +24,22 @@ Usage
 
 queuewait
 ---------
+Adds a column to sacct indicating the time spent waiting in the queue
+
 To see usage and options information run:
 
 ```
 queuewait -h
+```
+
+sacct-all
+---------
+Shows all sacct info for a given job in an easier to read format
+
+To see usage and options information run:
+
+```
+sacct-all -h
 ```
 
 Development/Debugging Notes
